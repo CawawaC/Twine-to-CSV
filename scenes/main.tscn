@@ -1,0 +1,105 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://scripts/json processor.gd" type="Script" id=1]
+[ext_resource path="res://scripts/open file.gd" type="Script" id=2]
+[ext_resource path="res://scripts/destination.gd" type="Script" id=3]
+[ext_resource path="res://scripts/languages.gd" type="Script" id=4]
+
+[node name="main" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 1 )
+
+[node name="open dialogue" type="FileDialog" parent="."]
+margin_top = 60.0
+margin_right = 490.0
+margin_bottom = 330.0
+popup_exclusive = true
+window_title = "Open a File"
+resizable = true
+mode_overrides_title = false
+mode = 0
+access = 2
+filters = PoolStringArray( "*.json" )
+current_dir = "D:/Projets/AZ dialogue sources"
+current_file = "az education z.json"
+current_path = "D:/Projets/AZ dialogue sources/az education z.json"
+script = ExtResource( 2 )
+
+[node name="destination" type="FileDialog" parent="."]
+margin_left = 28.0
+margin_top = 48.0
+margin_right = 512.0
+margin_bottom = 380.0
+window_title = "Open a Directory"
+resizable = true
+mode = 2
+access = 2
+current_dir = "D:/Projets/AZ Godot"
+current_file = "texts"
+current_path = "D:/Projets/AZ Godot/texts"
+script = ExtResource( 3 )
+
+[node name="ui" type="GridContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+columns = 2
+
+[node name="hi" type="Label" parent="ui"]
+margin_top = 3.0
+margin_right = 176.0
+margin_bottom = 17.0
+text = "Open a JSON file to process"
+
+[node name="open" type="Button" parent="ui"]
+margin_left = 180.0
+margin_right = 262.0
+margin_bottom = 20.0
+text = "Open JSON"
+
+[node name="lang label" type="Label" parent="ui"]
+margin_top = 27.0
+margin_right = 176.0
+margin_bottom = 41.0
+text = "JSON language"
+
+[node name="languages" type="OptionButton" parent="ui"]
+margin_left = 180.0
+margin_top = 24.0
+margin_right = 262.0
+margin_bottom = 44.0
+script = ExtResource( 4 )
+
+[node name="destination" type="Label" parent="ui"]
+margin_top = 51.0
+margin_right = 176.0
+margin_bottom = 65.0
+text = "Destination"
+
+[node name="destination browse" type="Button" parent="ui"]
+margin_left = 180.0
+margin_top = 48.0
+margin_right = 262.0
+margin_bottom = 68.0
+text = "Browse"
+
+[node name="process" type="Button" parent="ui"]
+margin_top = 72.0
+margin_right = 176.0
+margin_bottom = 92.0
+text = "Process"
+
+[node name="logbox" type="TextEdit" parent="."]
+anchor_top = 0.3
+anchor_right = 1.0
+anchor_bottom = 1.0
+readonly = true
+[connection signal="file_selected" from="open dialogue" to="open dialogue" method="_on_open_dialogue_file_selected"]
+[connection signal="file_selected" from="open dialogue" to="." method="_on_open_dialogue_file_selected"]
+[connection signal="dir_selected" from="destination" to="destination" method="_on_destination_dir_selected"]
+[connection signal="dir_selected" from="destination" to="." method="_on_destination_dir_selected"]
+[connection signal="pressed" from="ui/open" to="open dialogue" method="open"]
+[connection signal="item_selected" from="ui/languages" to="ui/languages" method="_on_languages_item_selected"]
+[connection signal="language_selected" from="ui/languages" to="." method="_on_languages_language_selected"]
+[connection signal="pressed" from="ui/destination browse" to="destination" method="open"]
+[connection signal="pressed" from="ui/process" to="." method="process"]

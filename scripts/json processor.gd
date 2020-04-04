@@ -16,21 +16,28 @@ func _ready():
 
 
 func process():
+	print(json_path)
+	
 	var json_string = load_file(json_path)
 	var json = JSON.parse(json_string).result
+	
+	print("test")
 	
 	var csv_file = File.new()
 	var json_path_array = json_path.get_basename().split("/")
 	var last = json_path_array[json_path_array.size()-1]
 	
 	var csv_path = str(destination_path, "/", last, ".csv")
+	
 	log_line("Opening .csv file at path: " + csv_path)
 	csv_file.open(csv_path, File.READ)
 	
 	var lines_array = []
-	while not csv_file.eof_reached():
-		var s = csv_file.get_csv_line(csv_delimiter)
-		lines_array.append(s)
+	if csv_file.file_exists(csv_path):
+		while not csv_file.eof_reached():
+			var s = csv_file.get_csv_line(csv_delimiter)
+			lines_array.append(s)
+	
 	
 	if lines_array.size() < 1:
 		log_line("Empty file, creating header")
